@@ -21,8 +21,8 @@
   /// </summary>
   /// <param name="options" type="object">
   ///     { levels: 2 } -> Remember only last "levels" changes<br/>
-  ///     { undoLabel: "Undo it (#COUNT)!" } -> Define a label for the undo command. "#COUNT#" sequence will be replaced with the stack length.<br/>
-  ///     { redoLabel: "Redo it (#COUNT)!" } -> Define a label for the redo command. "#COUNT#" sequence will be replaced with the stack length.<br/>
+  ///     { undoLabel: "Undo it (#COUNT)!" } -> Define a label for the undo command. ":COUNT" sequence will be replaced with the stack length.<br/>
+  ///     { redoLabel: "Redo it (#COUNT)!" } -> Define a label for the redo command. ":COUNT" sequence will be replaced with the stack length.<br/>
   /// </param>
   var undoManager = function (model, options) {
     var undoStack = ko.observableArray();
@@ -41,8 +41,8 @@
 
     var defaultOptions = {
       levels: 100,
-      undoLabel: "undo (#COUNT#)",
-      redoLabel: "redo (#COUNT#)"
+      undoLabel: "undo (:COUNT)",
+      redoLabel: "redo (:COUNT)"
     };
     
     if (typeof options == 'object') {
@@ -89,7 +89,7 @@
     var _xdoCommand = function(label, workState, stack) {
       return {
         name: ko.computed(function() {
-          return ko.utils.unwrapObservable(label).replace(/#COUNT#/, stack().length);
+          return ko.utils.unwrapObservable(label).replace(/:COUNT/, stack().length);
         }),
         enabled: ko.computed(function() {
           return stack().length !== 0;
