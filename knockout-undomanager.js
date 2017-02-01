@@ -32,6 +32,7 @@
     var STATE_UNDOING = 1;
     var STATE_REDOING = 2;
     var state = STATE_DOING;
+    var CHANGE_COUNT = 0;
 
     var MODE_NORMAL = 0; // add to stack every change
     var MODE_IGNORE = 1; // do not add anything to the stack
@@ -60,6 +61,13 @@
       } else if (state == STATE_DOING) {
         _pushInt(action, undoStack);
         redoStack.removeAll();
+      }
+      if(window.viewModel) {
+        if(CHANGE_COUNT < 10) CHANGE_COUNT++;
+        else {
+          CHANGE_COUNT = 0;
+          window.viewModel.save.execute();
+        }
       }
     };
     
